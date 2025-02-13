@@ -1,11 +1,9 @@
-// Глобальная переменная для отслеживания состояния отображения погоды
 let weatherVisible = false
 
 document.getElementById('getWeather').addEventListener('click', () => {
     const weatherInfo = document.querySelector('.weather-info')
     const button = document.getElementById('getWeather')
 
-    // Если погода не отображается, запрашиваем данные и показываем их
     if (!weatherVisible) {
         if (!navigator.geolocation) {
             showError('Геолокация не поддерживается вашим браузером')
@@ -29,7 +27,6 @@ document.getElementById('getWeather').addEventListener('click', () => {
                     const data = await response.json()
                     showWeather(data)
                     weatherVisible = true
-                    // Меняем текст кнопки на "Скрыть погоду"
                     button.innerHTML = '<span>Скрыть погоду</span>'
                 } catch (error) {
                     console.error('Ошибка при получении данных погоды:', error)
@@ -56,9 +53,7 @@ document.getElementById('getWeather').addEventListener('click', () => {
             },
         )
     } else {
-        // Если погода уже отображается – скрываем её с красивой анимацией
         weatherInfo.classList.add('fade-out')
-        // После окончания анимации очищаем содержимое и сбрасываем состояние
         weatherInfo.addEventListener('transitionend', function handler() {
             weatherInfo.innerHTML = ''
             weatherInfo.classList.remove('fade-out')
@@ -298,9 +293,7 @@ document.getElementById('generateQuote').addEventListener('click', () => {
     document.getElementById('quoteDisplay').textContent = randomQuote
 })
 
-// Функциональность ToDo‑листа с использованием localStorage
 document.addEventListener('DOMContentLoaded', () => {
-    // Загружаем задачи при загрузке страницы
     loadTasks()
 
     const addTaskButton = document.getElementById('addTask')
@@ -320,7 +313,6 @@ document.addEventListener('DOMContentLoaded', () => {
         tasks.forEach((task, index) => {
             const li = createTaskElement(task, index)
             todoList.appendChild(li)
-            // Добавляем анимацию для появления задачи
             li.classList.add('animated-element')
             setTimeout(() => li.classList.add('visible'), 100)
         })
@@ -364,7 +356,6 @@ document.addEventListener('DOMContentLoaded', () => {
         let tasks = JSON.parse(localStorage.getItem('todoTasks')) || []
         tasks.splice(taskIndex, 1)
         saveTasks(tasks)
-        // Перезагружаем список задач с обновлёнными данными
         loadTasks()
     }
 })

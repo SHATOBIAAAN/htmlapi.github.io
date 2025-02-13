@@ -540,7 +540,6 @@ button.animated-button:active {
     }
 }
 
-/* Стили для секции ToDo‑листа */
 .todo-list {
     background: white;
     padding: 2rem;
@@ -569,7 +568,6 @@ button.animated-button:active {
 }
 
 .todo-input button {
-    /* Кнопка имеет фиксированное содержимое на широких экранах */
     white-space: nowrap;
 }
 
@@ -622,14 +620,12 @@ button.animated-button:active {
     background: #d32f2f;
 }
 
-/* Стили для выполненной задачи */
 .todo-item.completed .task-text {
     text-decoration: line-through;
     color: #888;
     transition: color 0.3s;
 }
 
-/* Анимация удаления – слайд вправо с исчезновением */
 @keyframes slideOut {
     from {
         opacity: 1;
@@ -645,7 +641,6 @@ button.animated-button:active {
     animation: slideOut 0.5s forwards;
 }
 
-/* Адаптивные стили для ToDo‑листа */
 @media (max-width: 768px) {
     .todo-list {
         padding: 1rem;
@@ -662,7 +657,6 @@ button.animated-button:active {
     }
 }
 
-/* Ещё более компактное оформление для очень маленьких экранов */
 @media (max-width: 480px) {
     .todo-input input {
         padding: 0.5rem;
