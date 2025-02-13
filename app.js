@@ -1,69 +1,73 @@
 // Глобальная переменная для отслеживания состояния отображения погоды
-let weatherVisible = false;
+let weatherVisible = false
 
 document.getElementById('getWeather').addEventListener('click', () => {
-    const weatherInfo = document.querySelector('.weather-info');
-    const button = document.getElementById('getWeather');
+    const weatherInfo = document.querySelector('.weather-info')
+    const button = document.getElementById('getWeather')
 
     // Если погода не отображается, запрашиваем данные и показываем их
     if (!weatherVisible) {
         if (!navigator.geolocation) {
-            showError('Геолокация не поддерживается вашим браузером');
-            return;
+            showError('Геолокация не поддерживается вашим браузером')
+            return
         }
 
         navigator.geolocation.getCurrentPosition(
             async position => {
-                const { latitude, longitude } = position.coords;
+                const { latitude, longitude } = position.coords
                 try {
-                    const apiKey = '1a328fb29d454041b43142503251302';
+                    const apiKey = '1a328fb29d454041b43142503251302'
                     const response = await fetch(
-                        `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${latitude},${longitude}&lang=ru`
-                    );
+                        `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${latitude},${longitude}&lang=ru`,
+                    )
                     if (!response.ok) {
-                        const errorData = await response.json();
-                        throw new Error(`Ошибка ${response.status}: ${errorData.error.message}`);
+                        const errorData = await response.json()
+                        throw new Error(
+                            `Ошибка ${response.status}: ${errorData.error.message}`,
+                        )
                     }
-                    const data = await response.json();
-                    showWeather(data);
-                    weatherVisible = true;
+                    const data = await response.json()
+                    showWeather(data)
+                    weatherVisible = true
                     // Меняем текст кнопки на "Скрыть погоду"
-                    button.innerHTML = '<span>Скрыть погоду</span>';
+                    button.innerHTML = '<span>Скрыть погоду</span>'
                 } catch (error) {
-                    console.error('Ошибка при получении данных погоды:', error);
-                    showError(error.message);
+                    console.error('Ошибка при получении данных погоды:', error)
+                    showError(error.message)
                 }
             },
             error => {
                 switch (error.code) {
                     case error.PERMISSION_DENIED:
-                        showError('Пользователь отклонил запрос на геолокацию.');
-                        break;
+                        showError('Пользователь отклонил запрос на геолокацию.')
+                        break
                     case error.POSITION_UNAVAILABLE:
-                        showError('Информация о местоположении недоступна.');
-                        break;
+                        showError('Информация о местоположении недоступна.')
+                        break
                     case error.TIMEOUT:
-                        showError('Заявка на получение местоположения истекла.');
-                        break;
+                        showError('Заявка на получение местоположения истекла.')
+                        break
                     default:
-                        showError('Произошла ошибка при получении местоположения.');
-                        break;
+                        showError(
+                            'Произошла ошибка при получении местоположения.',
+                        )
+                        break
                 }
-            }
-        );
+            },
+        )
     } else {
         // Если погода уже отображается – скрываем её с красивой анимацией
-        weatherInfo.classList.add('fade-out');
+        weatherInfo.classList.add('fade-out')
         // После окончания анимации очищаем содержимое и сбрасываем состояние
         weatherInfo.addEventListener('transitionend', function handler() {
-            weatherInfo.innerHTML = '';
-            weatherInfo.classList.remove('fade-out');
-            weatherVisible = false;
-            button.innerHTML = '<span>Получить погоду</span>';
-            weatherInfo.removeEventListener('transitionend', handler);
-        });
+            weatherInfo.innerHTML = ''
+            weatherInfo.classList.remove('fade-out')
+            weatherVisible = false
+            button.innerHTML = '<span>Получить погоду</span>'
+            weatherInfo.removeEventListener('transitionend', handler)
+        })
     }
-});
+})
 
 const dropZone = document.getElementById('dropZone')
 const fileInput = document.getElementById('fileInput')
@@ -292,4 +296,75 @@ document.getElementById('generateQuote').addEventListener('click', () => {
     ]
     const randomQuote = quotes[Math.floor(Math.random() * quotes.length)]
     document.getElementById('quoteDisplay').textContent = randomQuote
+})
+
+// Функциональность ToDo‑листа с использованием localStorage
+document.addEventListener('DOMContentLoaded', () => {
+    // Загружаем задачи при загрузке страницы
+    loadTasks()
+
+    const addTaskButton = document.getElementById('addTask')
+    const todoInput = document.getElementById('todoInput')
+
+    addTaskButton.addEventListener('click', addTask)
+    todoInput.addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+            addTask()
+        }
+    })
+
+    function loadTasks() {
+        const tasks = JSON.parse(localStorage.getItem('todoTasks')) || []
+        const todoList = document.getElementById('todoList')
+        todoList.innerHTML = ''
+        tasks.forEach((task, index) => {
+            const li = createTaskElement(task, index)
+            todoList.appendChild(li)
+            // Добавляем анимацию для появления задачи
+            li.classList.add('animated-element')
+            setTimeout(() => li.classList.add('visible'), 100)
+        })
+    }
+
+    function saveTasks(tasks) {
+        localStorage.setItem('todoTasks', JSON.stringify(tasks))
+    }
+
+    function addTask() {
+        const taskText = todoInput.value.trim()
+        if (taskText === '') return
+
+        let tasks = JSON.parse(localStorage.getItem('todoTasks')) || []
+        tasks.push(taskText)
+        saveTasks(tasks)
+
+        const todoList = document.getElementById('todoList')
+        const li = createTaskElement(taskText, tasks.length - 1)
+        todoList.appendChild(li)
+        li.classList.add('animated-element')
+        setTimeout(() => li.classList.add('visible'), 100)
+
+        todoInput.value = ''
+    }
+
+    function createTaskElement(taskText, index) {
+        const li = document.createElement('li')
+        li.className = 'todo-item'
+        li.innerHTML = `
+      <span class="task-text">${taskText}</span>
+      <button class="delete-task animated-button"><span>Удалить</span></button>
+    `
+        li.querySelector('.delete-task').addEventListener('click', () => {
+            deleteTask(index)
+        })
+        return li
+    }
+
+    function deleteTask(taskIndex) {
+        let tasks = JSON.parse(localStorage.getItem('todoTasks')) || []
+        tasks.splice(taskIndex, 1)
+        saveTasks(tasks)
+        // Перезагружаем список задач с обновлёнными данными
+        loadTasks()
+    }
 })

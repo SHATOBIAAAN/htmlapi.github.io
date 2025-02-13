@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let particles = []
 
     const particleSettings = {
-        count: 100,
+        count: 3000,
         maxSpeed: 0.5,
         mouseInfluence: 0.1,
     }

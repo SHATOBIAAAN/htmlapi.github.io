@@ -5,7 +5,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>API Demo Site</title>
         <link rel="stylesheet" href="styles.css" />
-       
     </head>
     <body>
         <section class="hero">
@@ -17,6 +16,7 @@
         <section class="weather">
             <div class="section-inner">
                 <div class="weather-card">
+                    <p>Geolocation API</p>
                     <h2>
                         <i class="fas fa-cloud-sun"></i> Погода по вашей
                         геолокации
@@ -33,7 +33,10 @@
         <section class="file-upload">
             <div class="section-inner">
                 <div class="drop-zone" id="dropZone">
-                    <p>Перетащите файлы сюда или</p>
+                    <p>
+                        FileReaderAPI<br />
+                        Drag and Drop API
+                    </p>
                     <input type="file" id="fileInput" />
                 </div>
                 <div class="file-preview" id="preview"></div>
@@ -42,6 +45,7 @@
 
         <section class="notifications">
             <div class="section-inner">
+                <p>Notification API</p>
                 <button id="enableNotifications" class="animated-button">
                     Разрешить уведомления
                 </button>
@@ -49,26 +53,20 @@
             </div>
         </section>
 
-        <section class="portfolio">
+        <section class="todo-list">
             <div class="section-inner">
-                <h2>Наше портфолио</h2>
-                <div class="portfolio-container">
-                    <div class="portfolio-item animated-element">
-                        <img src="images/portfolio1.jpg" alt="Проект 1" />
-                        <h3>Проект 1</h3>
-                        <p>Описание проекта 1</p>
-                    </div>
-                    <div class="portfolio-item animated-element">
-                        <img src="images/portfolio2.jpg" alt="Проект 2" />
-                        <h3>Проект 2</h3>
-                        <p>Описание проекта 2</p>
-                    </div>
-                    <div class="portfolio-item animated-element">
-                        <img src="images/portfolio3.jpg" alt="Проект 3" />
-                        <h3>Проект 3</h3>
-                        <p>Описание проекта 3</p>
-                    </div>
+                <h2>Список задач</h2>
+                <div class="todo-input">
+                    <input
+                        type="text"
+                        id="todoInput"
+                        placeholder="Введите задачу..."
+                    />
+                    <button id="addTask" class="animated-button">
+                        <span>Добавить задачу</span>
+                    </button>
                 </div>
+                <ul id="todoList" class="todo-items"></ul>
             </div>
         </section>
 
